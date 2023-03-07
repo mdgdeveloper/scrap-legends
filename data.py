@@ -3,12 +3,58 @@
 # Version 1.0
 
 import json
+import re
 
 
 def sanitizer_title(value):
-    return value["leyenda"][0]
-    # Function
-    return True
+    # if(valeue[le])
+    try:
+        title = re.sub('[^a-zA-Z0-9ÁÉÍÓÚáéíóúñÑ \n\.]',
+                       '', value["leyenda"][0])
+        return title.lower()
+    except (KeyError):
+        print("No Key")
+        return ("")
+    except (IndexError):
+        print("No Index")
+        return ("")
+
+
+def sanitizer_author(value):
+    try:
+        if (value["author"]):
+            return value["author"].lower()
+        else:
+            return ("")
+    except (KeyError):
+        print("Author Error")
+        return ("")
+
+
+def sanitizer_location(value):
+    try:
+        if (value["location"]):
+            return value["location"].lower()
+        else:
+            return ("")
+    except (KeyError):
+        print("location Error")
+        return ("")
+
+
+def sanitizer_characters(value):
+    try:
+        characters = value["personajes"]
+        if (characters):
+            characters = re.sub('[\.]', '', value["personajes"])
+            chars = characters.split(",")
+        else:
+            chars = ""
+        return (chars)
+
+    except (KeyError):
+        print("Error in characters")
+        return ("")
 
 
 def sanitizer_text(value):
@@ -22,9 +68,13 @@ def sanitizer_text(value):
     return result
 
 
-def sanitizer_ids():
-    # Function
-    return True
+def sanitizer_img(value, id):
+    try:
+        image_unique = value["img"][0][17:]
+        return (str(id)+"_"+image_unique)
+    except (IndexError):
+        print("No Image")
+        return ("")
 
 
 def sanitizer_category():
@@ -37,5 +87,5 @@ data_test = {"title": "El lazo negro y el lazo blanco", "author": "Balaguer i Ci
 
 
 # Test
-print(sanitizer_title(data_test))
-print(sanitizer_text(data_test))
+# print(sanitizer_title(data_test))
+# print(sanitizer_text(data_test))

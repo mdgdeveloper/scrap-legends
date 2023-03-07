@@ -799,6 +799,9 @@ class LegendsspiderSpider(scrapy.Spider):
         leyenda3 = response.xpath(
             ".//div[@id='BodyMediumConsulta_dvTextoLeyenda']/node()//text()").getall()
 
+        location = response.css(
+            "span#BodyHeadMapConsulta_lblLocalizacion::text"
+        ).get()
         # leyenda_parsed = w3lib.html.remove_tags(leyenda3)
         yield {
             'title': title,
@@ -808,7 +811,8 @@ class LegendsspiderSpider(scrapy.Spider):
             'publicacion': publicacion,
             'enlaces': enlaces,
             'leyenda': leyenda3,
-            'img': image
+            'img': image,
+            'location': location
 
 
         }
